@@ -4,4 +4,4 @@
 
 > express
 > sqlite
-> ..
+> sqlite3
