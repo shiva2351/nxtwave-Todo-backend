@@ -1,19 +1,26 @@
-const express = require("express");
-const dotEnv=require("dotenv")
-var cors = require('cors')
-const bodyParser=require("body-parser")
+const express = require('express');
+const app = express();
+const userRoutes = require('./routes/users');
+const { initializeDatabase } = require('./db/database');
+const cors= require("cors")
 
-const app =express()
-app.use(bodyParser.json())
+app.use(express.json());
 app.use(cors())
-app.get('/',(req,res)=>{
-  res.send('server is ready');
+
+initializeDatabase().catch((err) => {
+    console.error('Failed to initialize database:', err);
 });
-const PORT=process.env.PORT || 3000
-dotEnv.config()
 
 
-app.listen(PORT,()=>{
-  console.log("server started and running at 5000")
- 
-})
+app.use('/users', userRoutes);
+
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
+
+
+
+
+
